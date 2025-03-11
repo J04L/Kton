@@ -1,0 +1,20 @@
+app: Contiene el punto de entrada principal, como la actividad principal (MainActivity), y componentes de nivel de aplicación. Por ejemplo, puede incluir configuraciones globales o clases de aplicación personalizadas.
+data: Gestiona operaciones relacionadas con datos, incluyendo:
+network: Interfaces de servicio API y clases de red.
+db: Interacciones con bases de datos, como entidades Room, DAOs y la clase de base de datos.
+repository: Implementa el patrón de repositorio para acceder a datos.
+pref: Almacenamiento de preferencias, como SharedPreferences.
+domain: Incluye la lógica de negocio y entidades específicas del dominio, con subdirectorios como:
+model: Modelos de datos del dominio.
+repository: Interfaces de repositorio para acceso a datos.
+di: Maneja la inyección de dependencias, típicamente usando Dagger o Hilt, con:
+modules: Módulos para definir dependencias.
+scopes: Componentes y alcances personalizados.
+presentation: Cubre componentes de UI, organizados por pantallas o características, con:
+ui: Subdirectorios por pantalla, cada uno con funciones composables, view models y componentes reutilizables.
+common: Componentes y view models compartidos entre pantallas.
+theme: Configuraciones de temas Compose, como colores, formas y tipografía.
+navigation: Lógica de navegación, como NavHost y utilidades relacionadas.
+notification: Clases para crear y gestionar notificaciones.
+workers: Clases Worker para tareas específicas o trabajos en segundo plano.
+utils: Clases de utilidad y funciones auxiliares para lógica compartida.
