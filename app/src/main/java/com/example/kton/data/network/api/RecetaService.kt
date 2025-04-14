@@ -1,7 +1,7 @@
 package com.example.kton.data.network.api
 
 import com.example.kton.data.network.models.RecetaResponse
-import com.example.kton.domain.model.Receta
+import com.example.kton.domain.model.RecetaDomain
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -24,7 +24,7 @@ interface RecetaService {
     ): Response<RecetaResponse>
 
     //crear receta
-    @POST("recetas") suspend fun postReceta(receta: Receta): Response<RecetaResponse>
+    @POST("recetas") suspend fun postReceta(receta: RecetaDomain): Response<RecetaResponse>
 
     //modificar receta
     @PUT ("recetas/{id}") suspend fun putReceta(
@@ -32,7 +32,7 @@ interface RecetaService {
     ): Response<RecetaResponse>
 
     //eliminar receta
-    suspend fun deleteReceta(): Result<Receta>
+    suspend fun deleteReceta(): Result<RecetaDomain>
     @DELETE ("recetas/{id}") suspend fun deleteReceta(
         @Path("id") id: String
     ): Response<RecetaResponse>

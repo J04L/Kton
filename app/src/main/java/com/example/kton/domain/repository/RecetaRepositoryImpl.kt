@@ -1,6 +1,5 @@
 package com.example.kton.domain.repository
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,13 +12,14 @@ import com.example.kton.data.network.models.IngredienteResponse
 import com.example.kton.data.network.models.PorcentajeEnergeticoResponse
 import com.example.kton.data.network.models.RecetaResponse
 import com.example.kton.data.network.models.ResultadoResponse
-import com.example.kton.domain.model.InformacionNutricional
-import com.example.kton.domain.model.IngredientePaso
-import com.example.kton.domain.model.Paso
-import com.example.kton.domain.model.PorcentajeEnergetico
-import com.example.kton.domain.model.Receta
-import com.example.kton.domain.model.Resultado
-import com.example.kton.domain.model.Ingrediente
+import com.example.kton.domain.model.InformacionNutricionalDomain
+import com.example.kton.domain.model.IngredientePasoDomain
+import com.example.kton.domain.model.PasoDomain
+import com.example.kton.domain.model.PorcentajeEnergeticoDomain
+import com.example.kton.domain.model.RecetaDomain
+import com.example.kton.domain.model.ResultadoDomain
+import com.example.kton.domain.model.IngredienteDomain
+import com.example.kton.presentation.models.RecetaUI
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
@@ -27,59 +27,59 @@ import kotlin.Result
 
 class RecetaRepositoryImpl @Inject constructor(
     private val recetaService: RecetaService,
-    private val recetasPagingSource: RecetasPagingSource
 ) : RecetaRepository {
-    override fun getRecetas(filtros: String?): Flow<PagingData<Receta>> {
-        recetasPagingSource.filtros = filtros
+    override fun getRecetasPaging(filtros: String?): Flow<PagingData<RecetaUI>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,           // Cantidad de items por página
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { recetasPagingSource }
+            pagingSourceFactory = { RecetasPagingSource(recetaService, filtros) }
         ).flow
     }
 
-    override suspend fun getReceta(id: String): Result<Receta> {
+    override suspend fun getReceta(id: String): Result<RecetaDomain> {
         return manejarRespuesta(recetaService.getReceta(id)) { response ->
             response.body()!!.toDomain()
         }
     }
 
-    override suspend fun postReceta(receta: Receta): Result<Receta> {
+    override suspend fun postReceta(receta: RecetaDomain): Result<RecetaDomain> {
         return manejarRespuesta(recetaService.postReceta(receta)) { response ->
             response.body()!!.toDomain()
         }
     }
 
-    override suspend fun putReceta(id: String): Result<Receta> {
+    override suspend fun putReceta(id: String): Result<RecetaDomain> {
         return manejarRespuesta(recetaService.putReceta(id)) { response ->
             response.body()!!.toDomain()
         }
     }
 
-    override suspend fun deleteReceta(id: String): Result<Receta> {
+    override suspend fun deleteReceta(id: String): Result<RecetaDomain> {
         return manejarRespuesta(recetaService.deleteReceta(id)) { response ->
             response.body()!!.toDomain()
         }
     }
 }
 // Extensión para convertir RecetaResponse a Receta
-fun RecetaResponse.toDomain(): Receta {
-    return Receta(
+fun RecetaResponse.toDomain(): RecetaDomain {
+    return RecetaDomain(
         id = this.id,
         titulo = this.titulo,
         descripcion = this.descripcion,
-        ingredientes = this.ingredientesTotales.map { it.toDomain() },
+        ingredientes = this.ingredientes.map { it.toDomain() },
         informacionNutricional = this.informacionNutricional.toDomain(),
-        herramientas = this.herramientasTotales,
-        tiempoTotal = this.tiempoTotal,
-        resultados = this.resultados.map { it.toDomain() }
+        herramientas = this.herramientas,
+        tiempo = this.tiempo,
+        resultados = this.resultados.map { it.toDomain() },
+        etiquetas = this.etiquetas,
+        restriccionesAlimentarias = this.restriccionesAlimentarias
     )
 }
 
-fun IngredienteResponse.toDomain(): Ingrediente {
-    return Ingrediente(
+fun IngredienteResponse.toDomain(): IngredienteDomain {
+    return IngredienteDomain(
         nombre = this.nombre,
         cantidad = this.cantidad,
         peso = this.peso,
@@ -87,8 +87,8 @@ fun IngredienteResponse.toDomain(): Ingrediente {
     )
 }
 
-fun PorcentajeEnergeticoResponse.toDomain(): PorcentajeEnergetico {
-    return PorcentajeEnergetico(
+fun PorcentajeEnergeticoResponse.toDomain(): PorcentajeEnergeticoDomain {
+    return PorcentajeEnergeticoDomain(
         energia = this.energia,
         proteinas = this.proteinas,
         carbohidratos = this.carbohidratos,
@@ -96,8 +96,8 @@ fun PorcentajeEnergeticoResponse.toDomain(): PorcentajeEnergetico {
     )
 }
 
-fun InformacionNutricionalResponse.toDomain(): InformacionNutricional {
-    return InformacionNutricional(
+fun InformacionNutricionalResponse.toDomain(): InformacionNutricionalDomain {
+    return InformacionNutricionalDomain(
         energia = this.energia,
         proteinas = this.proteinas,
         carbohidratos = this.carbohidratos,
@@ -105,25 +105,26 @@ fun InformacionNutricionalResponse.toDomain(): InformacionNutricional {
     )
 }
 
-fun ResultadoResponse.toDomain(): Resultado {
-    return Resultado(
-        nombre = this.nombreResultado,
+fun ResultadoResponse.toDomain(): ResultadoDomain {
+    return ResultadoDomain(
+        nombre = this.nombre,
         pasos = this.pasos.map { it.toDomain() }
     )
 }
 
-fun PasoResponse.toDomain(): Paso {
-    return Paso(
+fun PasoResponse.toDomain(): PasoDomain {
+    return PasoDomain(
         verbo = this.verbo,
         ingredientes = this.ingredientes.map { it.toDomain() },
         herramienta = this.herramienta,
         frase = this.frase,
-        tiempo = this.tiempo
+        tiempo = this.tiempo,
+        numero = this.numero
     )
 }
 
-fun IngredientePasoResponse.toDomain(): IngredientePaso {
-    return IngredientePaso(
+fun IngredientePasoResponse.toDomain(): IngredientePasoDomain {
+    return IngredientePasoDomain(
         nombre = this.nombre,
         cantidad = this.cantidad,
         peso = this.peso

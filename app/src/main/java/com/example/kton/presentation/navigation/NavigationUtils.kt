@@ -17,30 +17,37 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.kton.presentation.ui.MenuRecetasScreen
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kton.presentation.RecetaViewModel
+import com.example.kton.presentation.ui.RecetaScreen
 import com.example.kton.presentation.ui.ScreenUsuario
-import com.example.kton.utils.HomeScreen
 import com.example.kton.utils.ProfileScreen
 
-sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
-    object Home : Screen("home", "Inicio", Icons.Filled.Home)
-    object Search : Screen("search", "Buscar", Icons.Filled.Search)
-    object Profile : Screen("profile", "Perfil", Icons.Filled.Person)
+sealed class BarScreen(val route: String, val title: String, val icon: ImageVector) {
+    object Home : BarScreen("home", "Inicio", Icons.Filled.Home)
+    object Search : BarScreen("search", "Buscar", Icons.Filled.Search)
+    object Profile : BarScreen("profile", "Perfil", Icons.Filled.Person)
+}
+sealed class Screen(val route: String){
+    object Receta : Screen("receta")
 }
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = Screen.Home.route) {
-        composable(Screen.Home.route) { ScreenUsuario() }
-        composable(Screen.Search.route) { MenuRecetasScreen() }
-        composable(Screen.Profile.route) { ProfileScreen() }
+    val recetaViewModel : RecetaViewModel = viewModel()
+    NavHost(navController, startDestination = BarScreen.Home.route) {
+        composable(BarScreen.Home.route) { ScreenUsuario() }
+        composable(BarScreen.Search.route) { MenuRecetasScreen(viewModel=recetaViewModel, navController= navController) }
+        composable(BarScreen.Profile.route) { ProfileScreen() }
+        composable(Screen.Receta.route) { RecetaScreen(recetaViewModel) }
     }
 }
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        Screen.Home,
-        Screen.Search,
-        Screen.Profile
+        BarScreen.Home,
+        BarScreen.Search,
+        BarScreen.Profile
     )
     NavigationBar {
         //encuentra la pantalla en la que estámos actualemte

@@ -2,6 +2,7 @@ package com.example.kton.di.modules
 
 import com.example.kton.data.network.RecetasPagingSource
 import com.example.kton.data.network.api.RecetaService
+import com.example.kton.data.network.api.UsuarioService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +30,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit{
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5000/")
+            .baseUrl("http://192.168.1.33:5000/")
             .client(okHttpClient) //cliente inyectado por hilt
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -43,7 +44,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRecetasPagingSource(recetaService: RecetaService): RecetasPagingSource{
-        return RecetasPagingSource(recetaService)
+    fun provideUsuarioService(retrofit: Retrofit): UsuarioService{
+        return retrofit.create(UsuarioService::class.java) //retrofir inyectado por hilt
     }
 }

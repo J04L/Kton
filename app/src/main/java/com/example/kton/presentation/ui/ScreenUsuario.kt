@@ -46,7 +46,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
+import com.example.kton.presentation.RecetaViewModel
+import com.example.kton.presentation.UsuarioViewModel
 import com.example.kton.utils.NivelesActividad
 import com.example.kton.utils.historialRecetas
 import com.example.kton.utils.nivelesDeActividad
@@ -58,8 +62,10 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ScreenUsuario() {
-    Column {
+fun ScreenUsuario(recetaViewModel: RecetaViewModel = hiltViewModel(),
+                  usuarioViewModel: UsuarioViewModel = hiltViewModel()) {
+
+      Column {
         //cuadro husuario
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -125,12 +131,6 @@ fun ScreenUsuario() {
             .background(Color.Green)){
             Column(horizontalAlignment = Alignment.CenterHorizontally){
                 Text(text = "HISTOTIAL")
-                var map : MutableMap<String, Boolean> by remember {mutableStateOf(mutableMapOf())}
-                historialRecetas.forEach { item ->
-                    if(Random.nextInt(100) > 30 ) map.put(item, true)
-                    else map.put(item,false)
-                }
-                recetasBuscadasItem(map)
             }
         }
         //favoritos

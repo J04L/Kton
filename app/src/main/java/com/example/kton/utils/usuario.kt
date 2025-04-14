@@ -1,5 +1,8 @@
 package com.example.kton.utils
 
+import com.example.kton.domain.model.Usuario
+import com.google.gson.Gson
+
 val nivelesDeActividad : Map<String, Int> = mapOf(
     "sedentario" to 1,
     "ligero" to 2,
@@ -48,3 +51,19 @@ val recetasGuardadas = listOf(
         url = "https://imgs.search.brave.com/Q55v0IDyWa7FPdFGEgxiIq-Wl2VPxI4otkdgi-FjqS4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTE0/MjM5MTQ2My9waG90/by9wYXN0YS1jYXJi/b25hcmEuanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPTdnTzlt/UmVORnpZMTBxc211/X1g0X0xaNDUtVWNW/UHR6cEhGLURPRnA2/Q2M9"
     )
 )
+val usuarioTest = "{\n" +
+        "  \"nombre\": \"Gary33\",\n" +
+        "  \"edad\": 18,\n" +
+        "  \"email\": \"gary33@example.com\",\n" +
+        "  \"foto\": \"/imageUsers/gary33.webp\",\n" +
+        "  \"peso\": 70,\n" +
+        "  \"altura\": 175,\n" +
+        "  \"objetivo\": \"déficit\",\n" +
+        "  \"actividadFisica\": \"sedentario\",\n" +
+        "  \"sexo\": \"hombre\",\n" +
+        "  \"tiempoDisponibleParaCocinar\": 15,\n" +
+        "  \"restriccionesAlimentarias\": []\n" +
+        "}"
+
+val gson = Gson()
+val usuarioPruebas = gson.fromJson(usuarioTest, Usuario::class.java)

@@ -63,7 +63,8 @@ dependencies {
 
     // Implementación básica de Paging 3 (sin Compose):
     implementation ("androidx.paging:paging-runtime:3.3.6")
-    implementation ("androidx.paging:paging-compose:1.x.x")// con compose
+    implementation ("androidx.paging:paging-compose:3.3.6")// con compose
+
 
     implementation ("androidx.appcompat:appcompat:1.7.0")
     implementation(libs.androidx.core.ktx)

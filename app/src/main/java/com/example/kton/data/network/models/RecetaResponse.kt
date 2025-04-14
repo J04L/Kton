@@ -1,61 +1,71 @@
 package com.example.kton.data.network.models
 
+import com.example.kton.domain.model.InformacionNutricional
+import com.example.kton.domain.model.Ingrediente
+import com.example.kton.domain.model.IngredientePaso
+import com.example.kton.domain.model.Paso
+import com.example.kton.domain.model.PorcentajeEnergetico
+import com.example.kton.domain.model.Receta
+import com.example.kton.domain.model.Resultado
 import com.google.gson.annotations.SerializedName
 
 // data/network/model/RecetaResponse.kt
 data class RecetaResponse(
-    @SerializedName("_id") val id: String,
-    @SerializedName("titulo") val titulo: String,
-    @SerializedName("descripcion") val descripcion: String,
-    @SerializedName("ingredientesTotales") val ingredientesTotales: List<IngredienteResponse>,
-    @SerializedName("informacionNutricional") val informacionNutricional: InformacionNutricionalResponse,
-    @SerializedName("herramientasTotales") val herramientasTotales: List<String>,
-    @SerializedName("tiempoTotal") val tiempoTotal: Int,
-    @SerializedName("resultados") val resultados: List<ResultadoResponse>
-)
+    @SerializedName("_id") override val id: String,
+    @SerializedName("titulo") override val titulo: String,
+    @SerializedName("descripcion") override val descripcion: String,
+    @SerializedName("ingredientesTotales") override val ingredientes: List<IngredienteResponse>,
+    @SerializedName("informacionNutricional") override val informacionNutricional: InformacionNutricionalResponse,
+    @SerializedName("herramientasTotales") override val herramientas: List<String>,
+    @SerializedName("tiempoTotal") override val tiempo: Int,
+    @SerializedName("resultados") override val resultados: List<ResultadoResponse>,
+    @SerializedName("etiquetas") override val etiquetas : List<String>,
+    @SerializedName("restriccionesAlimentarias") override val restriccionesAlimentarias : List<String>
+): Receta
 
 // data/network/model/IngredienteResponse.kt
 data class IngredienteResponse(
-    @SerializedName("nombre") val nombre: String,
-    @SerializedName("cantidad") val cantidad: String?,
-    @SerializedName("peso") val peso: Int?,
-    @SerializedName("porcentajeEnergetico") val porcentajeEnergetico: PorcentajeEnergeticoResponse?
-)
+    @SerializedName("nombre") override val nombre: String,
+    @SerializedName("cantidad") override val cantidad: String,
+    @SerializedName("peso") override val peso: Int?,
+    @SerializedName("porcentajeEnergetico") override val porcentajeEnergetico: PorcentajeEnergeticoResponse?
+): Ingrediente
 
 // data/network/model/PorcentajeEnergeticoResponse.kt
 data class PorcentajeEnergeticoResponse(
-    @SerializedName("energia") val energia: Int,
-    @SerializedName("proteinas") val proteinas: Int,
-    @SerializedName("carbohidratos") val carbohidratos: Int,
-    @SerializedName("grasas") val grasas: Int
-)
+    @SerializedName("energia") override val energia: Int,
+    @SerializedName("proteinas") override val proteinas: Int,
+    @SerializedName("carbohidratos") override val carbohidratos: Int,
+    @SerializedName("grasas") override val grasas: Int
+) : PorcentajeEnergetico
 
 // data/network/model/InformacionNutricionalResponse.kt
 data class InformacionNutricionalResponse(
-    @SerializedName("energia") val energia: Int,
-    @SerializedName("proteinas") val proteinas: Int,
-    @SerializedName("carbohidratos") val carbohidratos: Int,
-    @SerializedName("grasas") val grasas: Int
-)
+    @SerializedName("energia") override val energia: Int,
+    @SerializedName("proteinas") override val proteinas: Int,
+    @SerializedName("carbohidratos") override val carbohidratos: Int,
+    @SerializedName("grasas") override val grasas: Int
+): InformacionNutricional
 
 // data/network/model/ResultadoResponse.kt
 data class ResultadoResponse(
-    @SerializedName("nombreResultado") val nombreResultado: String,
-    @SerializedName("pasos") val pasos: List<PasoResponse>
-)
+    @SerializedName("nombreResultado") override val nombre: String,
+    @SerializedName("pasos") override val pasos: List<PasoResponse>
+): Resultado
 
 // data/network/model/PasoResponse.kt
 data class PasoResponse(
-    @SerializedName("verbo") val verbo: String,
-    @SerializedName("ingredientes") val ingredientes: List<IngredientePasoResponse>,
-    @SerializedName("herramienta") val herramienta: String?,
-    @SerializedName("frase") val frase: String,
-    @SerializedName("tiempo") val tiempo: Int?
-)
+    @SerializedName("verbo") override val verbo: String,
+    @SerializedName("ingredientes") override val ingredientes: List<IngredientePasoResponse>,
+    @SerializedName("herramienta") override val herramienta: String?,
+    @SerializedName("frase") override val frase: String,
+    @SerializedName("tiempo") override val tiempo: Int?,
+    @SerializedName("numero") override val numero: Int
+): Paso
 
 // data/network/model/IngredientePasoResponse.kt
 data class IngredientePasoResponse(
-    @SerializedName("nombre") val nombre: String,
-    @SerializedName("cantidad") val cantidad: String?,
-    @SerializedName("peso") val peso: Int?
-)
+    @SerializedName("nombre") override val nombre: String,
+    @SerializedName("cantidad") override val cantidad: String?,
+    @SerializedName("peso") override val peso: Int?
+) : IngredientePaso

@@ -1,59 +1,51 @@
 package com.example.kton.domain.model
 
-// domain/model/Receta.kt
-data class Receta(
-    val id: String?,
-    val titulo: String,
-    val descripcion: String,
-    val ingredientes: List<Ingrediente>,
-    val informacionNutricional: InformacionNutricional,
-    val herramientas: List<String>,
-    val tiempoTotal: Int,
+interface Receta {
+    val id: String?
+    val titulo: String
+    val descripcion: String
+    val ingredientes: List<Ingrediente>
+    val informacionNutricional: InformacionNutricional
+    val herramientas: List<String>
+    val tiempo: Int
     val resultados: List<Resultado>
-)
-
-// domain/model/Ingrediente.kt
-data class Ingrediente(
-    val nombre: String,
-    val cantidad: String?,
-    val peso: Int?,
-    val porcentajeEnergetico: PorcentajeEnergetico?
-)
-
-// domain/model/PorcentajeEnergetico.kt
-data class PorcentajeEnergetico(
-    val energia: Int,
-    val proteinas: Int,
-    val carbohidratos: Int,
-    val grasas: Int
-)
-
-// domain/model/InformacionNutricional.kt
-data class InformacionNutricional(
-    val energia: Int,
-    val proteinas: Int,
-    val carbohidratos: Int,
-    val grasas: Int
-)
-
-// domain/model/Resultado.kt
-data class Resultado(
-    val nombre: String,
-    val pasos: List<Paso>
-)
-
-// domain/model/Paso.kt
-data class Paso(
-    val verbo: String,
-    val ingredientes: List<IngredientePaso>,
-    val herramienta: String?,
-    val frase: String,
-    val tiempo: Int?
-)
-
-// domain/model/IngredientePaso.kt
-data class IngredientePaso(
-    val nombre: String,
-    val cantidad: String?,
+    val etiquetas : List<String>
+    val restriccionesAlimentarias : List<String>
+}
+interface Ingrediente {
+    val nombre: String
+    val cantidad: String
     val peso: Int?
-)
+    val porcentajeEnergetico: PorcentajeEnergetico?
+}
+interface PorcentajeEnergetico {
+    val energia: Int
+    val proteinas: Int
+    val carbohidratos: Int
+    val grasas: Int
+}
+interface InformacionNutricional {
+    val energia: Int
+    val proteinas: Int
+    val carbohidratos: Int
+    val grasas: Int
+}
+interface Resultado{
+    val nombre: String
+    val pasos: List<Paso>
+}
+interface Paso {
+    val verbo: String
+    val ingredientes: List<IngredientePaso>
+    val herramienta: String?
+    val frase: String
+    val tiempo: Int?
+    val numero: Int
+}
+interface IngredientePaso {
+    val nombre: String
+    val cantidad: String?
+    val peso: Int?
+}
+
+
