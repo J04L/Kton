@@ -1,11 +1,14 @@
 package com.example.kton.di.modules
 
+import android.content.Context
 import com.example.kton.data.network.RecetasPagingSource
 import com.example.kton.data.network.api.RecetaService
 import com.example.kton.data.network.api.UsuarioService
+import com.example.kton.data.network.interceptors.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -18,11 +21,21 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    //controla la respuesta
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideAuthInterceptor(
+        @ApplicationContext context: Context
+    ): AuthInterceptor {
+        return AuthInterceptor(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(
+        authInterceptor: AuthInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS) //desconecta si  tarda más de 30 en establecer conexión
-            .readTimeout(30, TimeUnit.SECONDS) //desconecta si tarda más de 30 en leer datos
+            .addInterceptor(authInterceptor)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .build()
     }
 
