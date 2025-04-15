@@ -16,6 +16,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.kton.presentation.navigation.BottomNavigationBar
 import com.example.kton.presentation.navigation.NavigationGraph
 import com.example.kton.presentation.theme.KtonTheme
+import com.example.kton.utils.LoginScreenPreview
+import com.example.kton.utils.RegisterScreenPreview
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +27,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KtonTheme {
-                MainScreen()
+                RegisterScreenPreview()
+
             }
         }
     }
