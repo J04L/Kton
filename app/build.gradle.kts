@@ -65,6 +65,7 @@ dependencies {
     implementation ("androidx.paging:paging-runtime:3.3.6")
     implementation ("androidx.paging:paging-compose:3.3.6")// con compose
 
+    implementation ("androidx.datastore:datastore-preferences:1.1.4")
 
     implementation ("androidx.appcompat:appcompat:1.7.0")
     implementation(libs.androidx.core.ktx)
