@@ -1,17 +1,17 @@
-package com.example.kton.domain.repository
+package com.example.kton.domain.repository.implementatios
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.kton.data.network.RecetasPagingSource
 import com.example.kton.data.network.api.RecetaService
-import com.example.kton.data.network.models.InformacionNutricionalResponse
-import com.example.kton.data.network.models.IngredientePasoResponse
-import com.example.kton.data.network.models.PasoResponse
-import com.example.kton.data.network.models.IngredienteResponse
-import com.example.kton.data.network.models.PorcentajeEnergeticoResponse
-import com.example.kton.data.network.models.RecetaResponse
-import com.example.kton.data.network.models.ResultadoResponse
+import com.example.kton.data.network.models.responses.InformacionNutricionalResponse
+import com.example.kton.data.network.models.responses.IngredientePasoResponse
+import com.example.kton.data.network.models.responses.PasoResponse
+import com.example.kton.data.network.models.responses.IngredienteResponse
+import com.example.kton.data.network.models.responses.PorcentajeEnergeticoResponse
+import com.example.kton.data.network.models.responses.RecetaResponse
+import com.example.kton.data.network.models.responses.ResultadoResponse
 import com.example.kton.domain.model.InformacionNutricionalDomain
 import com.example.kton.domain.model.IngredientePasoDomain
 import com.example.kton.domain.model.PasoDomain
@@ -19,6 +19,7 @@ import com.example.kton.domain.model.PorcentajeEnergeticoDomain
 import com.example.kton.domain.model.RecetaDomain
 import com.example.kton.domain.model.ResultadoDomain
 import com.example.kton.domain.model.IngredienteDomain
+import com.example.kton.domain.repository.RecetaRepository
 import com.example.kton.presentation.models.RecetaUI
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response

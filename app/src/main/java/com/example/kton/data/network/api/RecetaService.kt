@@ -1,6 +1,6 @@
 package com.example.kton.data.network.api
 
-import com.example.kton.data.network.models.RecetaResponse
+import com.example.kton.data.network.models.responses.RecetaResponse
 import com.example.kton.domain.model.RecetaDomain
 import retrofit2.Response
 import retrofit2.http.DELETE

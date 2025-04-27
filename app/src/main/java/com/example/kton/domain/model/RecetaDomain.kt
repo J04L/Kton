@@ -1,5 +1,13 @@
 package com.example.kton.domain.model
 
+import com.example.kton.domain.model.interfaces.InformacionNutricional
+import com.example.kton.domain.model.interfaces.Ingrediente
+import com.example.kton.domain.model.interfaces.IngredientePaso
+import com.example.kton.domain.model.interfaces.Paso
+import com.example.kton.domain.model.interfaces.PorcentajeEnergetico
+import com.example.kton.domain.model.interfaces.Receta
+import com.example.kton.domain.model.interfaces.Resultado
+
 // domain/model/RecetaDomain.kt
 data class RecetaDomain(
     override val id: String?,

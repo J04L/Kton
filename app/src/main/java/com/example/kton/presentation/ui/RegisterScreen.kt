@@ -1,146 +1,241 @@
-package com.example.kton.presentation.ui
+package com.example.registrousuario // Reemplaza con tu nombre de paquete
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.kton.R
+
+// Define IDs for default avatars
+val defaultAvatars = listOf(
+    R.drawable.cheff_avatar,
+    R.drawable.shusi_avatar,
+    R.drawable.tarta_avatar,
+    R.drawable.pollo_bailando_avatar,
+    R.drawable.helado_pirata_avatar,
+    R.drawable.unset_avatar
+)
 
 @Composable
 fun RegisterScreen(
-    onRegisterClick: (String, String, String) -> Unit, // Callback para el botón de registro
-    onNavigateToLogin: () -> Unit, // Callback para navegar a login
-    // logoPainter: Painter = painterResource(id = R.drawable.ic_company_logo) // Ejemplo
+    onRegisterClick: (
+        nombre: String, email: String, pass: String, fotoUri: Uri?, fotoDefaultResId: Int?
+            ) -> Unit = { _, _, _, _, _ -> }, // Callback para el regis
+    onNavigateToLogin: () -> Unit
 ) {
-    // Estados para los campos del formulario de registro
-    var username by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
+    // State for input fields
+    var nombre by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-    // Contenedor principal
+    // State for profile picture
+    var selectedImageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
+    var selectedDefaultAvatarResId by rememberSaveable { mutableStateOf<Int?>(null) }
+    var showDefaultAvatarSelection by rememberSaveable { mutableStateOf(false) }
+
+    // Activity Result Launcher for picking an image from the gallery
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        selectedImageUri = uri
+        selectedDefaultAvatarResId = null // Deselect default avatar if user uploads
+        showDefaultAvatarSelection = false // Hide selection row
+    }
+
+    // Main layout column, scrollable
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(32.dp),
+            .verticalScroll(rememberScrollState()) // Make the column scrollable
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // --- Logo de la Empresa ---
-        Image(
-            // painter = logoPainter,
-            painter = painterResource(id = R.drawable.kton_logo), // Placeholder
-            contentDescription = "Logo de la Empresa",
-            modifier = Modifier
-                .size(100.dp) // Un poco más pequeño quizás en registro
-                .padding(bottom = 32.dp),
-            contentScale = ContentScale.Fit
-        )
 
-        // --- Campo de Texto para Nombre de Usuario ---
+        Text("Registro", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // --- Profile Picture Section ---
+        Box(contentAlignment = Alignment.BottomEnd) {
+            // Display selected image or default avatar or placeholder
+            val painter = when {
+                selectedImageUri != null -> rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(selectedImageUri)
+                        .crossfade(true)
+                        .build()
+                )
+                selectedDefaultAvatarResId != null -> painterResource(id = selectedDefaultAvatarResId!!)
+                else -> painterResource(id = android.R.drawable.ic_menu_camera) // Placeholder icon
+            }
+
+            Image(
+                painter = painter,
+                contentDescription = "Foto de perfil",
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                    .clickable {
+                        // Toggle default avatar selection visibility
+                        showDefaultAvatarSelection = !showDefaultAvatarSelection
+                    },
+                contentScale = ContentScale.Crop // Crop the image to fit the circle
+            )
+
+            // Small icon button to indicate editability
+            Icon(
+                imageVector = Icons.Filled.Edit,
+                contentDescription = "Editar foto",
+                modifier = Modifier
+                    .size(30.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
+                    .padding(4.dp)
+                    .align(Alignment.BottomEnd),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // --- Default Avatar Selection (conditionally visible) ---
+        if (showDefaultAvatarSelection) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("Elige un avatar o sube tu foto", style = MaterialTheme.typography.bodySmall)
+                Spacer(modifier = Modifier.height(8.dp))
+                // Button to upload photo
+                Button(
+                    onClick = { imagePickerLauncher.launch("image/*") },
+                    modifier = Modifier.fillMaxWidth(0.8f) // Limit width
+                ) {
+                    Icon(Icons.Filled.Edit, contentDescription = null, modifier = Modifier.size(ButtonDefaults.IconSize))
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Subir foto")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Horizontal list of default avatars (if any are defined)
+                if (defaultAvatars.isNotEmpty()) {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        items(defaultAvatars) { avatarResId ->
+                            Image(
+                                painter = painterResource(id = avatarResId),
+                                contentDescription = "Avatar por defecto",
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(CircleShape)
+                                    .border(
+                                        2.dp,
+                                        if (selectedDefaultAvatarResId == avatarResId) MaterialTheme.colorScheme.primary else Color.Gray,
+                                        CircleShape
+                                    )
+                                    .clickable {
+                                        selectedDefaultAvatarResId = avatarResId
+                                        selectedImageUri = null // Deselect uploaded image
+                                        showDefaultAvatarSelection = false // Hide selection after choosing
+                                    },
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                    }
+                } else {
+                    Text("No hay avatares por defecto definidos.", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                }
+                Spacer(modifier = Modifier.height(16.dp)) // Space after avatar selection
+            }
+        }
+
+        // --- Input Fields ---
         OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Nombre de Usuario") },
+            value = nombre,
+            onValueChange = { nombre = it },
+            label = { Text("Nombre") },
+            leadingIcon = { Icon(Icons.Filled.Person, contentDescription = "Icono Nombre") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- Campo de Texto para Email ---
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
+            leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Icono Email") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), // Teclado de email
             modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- Campo de Texto para Contraseña ---
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Contraseña") },
-            singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),
+            leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Icono Contraseña") },
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.fillMaxWidth()
-        )
+            trailingIcon = {
+                val image = if (passwordVisible)
+                    Icons.Filled.Info
+                else Icons.Filled.Close
+                val description = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña"
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // --- Campo de Texto para Confirmar Contraseña ---
-        OutlinedTextField(
-            value = confirmPassword,
-            onValueChange = { confirmPassword = it },
-            label = { Text("Confirmar Contraseña") },
-            singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.fillMaxWidth(),
-            // Podrías añadir validación aquí para que coincida con la contraseña
-            isError = password != confirmPassword && confirmPassword.isNotEmpty()
-        )
-        // Mensaje de error simple si las contraseñas no coinciden
-        if (password != confirmPassword && confirmPassword.isNotEmpty()) {
-            Text(
-                text = "Las contraseñas no coinciden",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-            )
-        }
-
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // --- Botón de Registro ---
-        Button(
-            onClick = {
-                // Solo llama al callback si las contraseñas coinciden y no están vacías
-                if (password == confirmPassword && password.isNotEmpty()) {
-                    onRegisterClick(username, email, password)
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, description)
                 }
             },
-            modifier = Modifier.fillMaxWidth(),
-            // Deshabilita el botón si las contraseñas no coinciden o están vacías
-            enabled = password == confirmPassword && password.isNotEmpty() && email.isNotEmpty() && username.isNotEmpty()
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // --- Registration Button ---
+        Button(
+            onClick = {
+                // Basic validation (can be expanded)
+                if (nombre.isNotBlank() && email.isNotBlank() && password.isNotBlank() && (selectedImageUri != null || selectedDefaultAvatarResId != null)) {
+                    onRegisterClick(nombre, email, password, selectedImageUri, selectedDefaultAvatarResId)
+                } else {
+                    // Handle validation error (e.g., show a Snackbar)
+                    println("Error: Completa todos los campos y selecciona una foto.") // Replace with user feedback
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Registrarse")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // --- Texto/Botón para ir a Login ---
-        TextButton(onClick = onNavigateToLogin) {
-            Text("¿Ya tienes cuenta? Inicia Sesión")
         }
     }
 }

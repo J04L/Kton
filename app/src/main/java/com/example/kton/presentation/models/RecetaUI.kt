@@ -7,7 +7,7 @@ class RecetaUI(
     val size: Int
 ) {
     companion object{
-        val SMALLSIZE : Int = 1
-        val LARGESIZE : Int = 2
+        val SMALLWEIGHT : Int = 1
+        val LARGEWEIGHT : Int = 2
     }
 }

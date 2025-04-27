@@ -54,6 +54,14 @@ dependencies {
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Para trabajar con JSON y Gson
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    //DataStore encriptado
+    // Jetpack Security Crypto
+    implementation ("androidx.security:security-crypto:1.1.0-alpha07")
+// DataStore (si usas Preferences)
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
+    //Reflexión
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.0.20")
 
     // Dependencias de Hilt
     implementation ("com.google.dagger:hilt-android:2.51.1")
@@ -63,9 +71,7 @@ dependencies {
 
     // Implementación básica de Paging 3 (sin Compose):
     implementation ("androidx.paging:paging-runtime:3.3.6")
-    implementation ("androidx.paging:paging-compose:3.3.6")// con compose
-
-    implementation ("androidx.datastore:datastore-preferences:1.1.4")
+    implementation (libs.androidx.paging.compose)// con compose
 
     implementation ("androidx.appcompat:appcompat:1.7.0")
     implementation(libs.androidx.core.ktx)

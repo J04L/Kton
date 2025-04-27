@@ -1,29 +1,29 @@
-package com.example.kton.domain.repository
+package com.example.kton.domain.repository.implementatios
 
 import com.example.kton.data.network.api.UsuarioService
-import com.example.kton.data.network.models.UsuarioRequest
-import com.example.kton.domain.model.Usuario
+import com.example.kton.domain.model.UsuarioDomain
+import com.example.kton.domain.repository.UsuarioRepository
 import retrofit2.Response
 import javax.inject.Inject
 
 class UsuarioRepositoryImpl @Inject constructor(
     private val usuarioService: UsuarioService
-) : UsuarioRepository{
-    override suspend fun getUsuario(id: String) : Result<Usuario>{
+) : UsuarioRepository {
+    override suspend fun getUsuario(id: String) : Result<UsuarioDomain>{
         return manejarRespuesta(usuarioService.getUsuario(id)) { respuesta ->
             respuesta.body()!!.toDomain()
         }
     }
 
-    override suspend fun createUsuario(
-        usuario: Usuario,
+    /*override suspend fun createUsuario(
+        usuario: UsuarioDomain,
         password: String
-    ): Result<Usuario> {
+    ): Result<UsuarioDomain> {
 
-        return manejarRespuesta(usuarioService.postUsuario(UsuarioRequest(usuario, password))){ respuesta ->
+        return manejarRespuesta(usuarioService.postUsuario(RegisterRequest(usuario, password))){ respuesta ->
             respuesta.body()!!.toDomain()
         }
-    }
+    }*/
     private fun<T, R> manejarRespuesta(
         respuesta: Response<T>,
         transform: (Response<T>) -> R

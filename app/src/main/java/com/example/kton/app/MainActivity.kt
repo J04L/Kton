@@ -12,23 +12,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHost
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.kton.presentation.navigation.BarScreen
 import com.example.kton.presentation.navigation.BottomNavigationBar
 import com.example.kton.presentation.navigation.NavigationGraph
 import com.example.kton.presentation.theme.KtonTheme
+import com.example.kton.presentation.ui.LoginScreen
 import com.example.kton.utils.LoginScreenPreview
-import com.example.kton.utils.RegisterScreenPreview
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
         enableEdgeToEdge()
         setContent {
             KtonTheme {
-                RegisterScreenPreview()
-
+                MainScreen()
             }
         }
     }
@@ -36,12 +42,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+    val currentScreen = navController.currentBackStackEntryAsState().value?.destination?.route.toString()
+
+    val bottomBarRoutes = BarScreen.items.map { it.route }
+
 
     Scaffold(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight(),
-        bottomBar = { BottomNavigationBar(navController) }
+        .fillMaxSize(),
+        bottomBar = { if(currentScreen in bottomBarRoutes) BottomNavigationBar(navController)}
     ) { innerPadding ->
+
         Column(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
             NavigationGraph(navController)
         }

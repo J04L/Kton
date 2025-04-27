@@ -1,12 +1,12 @@
-package com.example.kton.data.network.models
+package com.example.kton.data.network.models.responses
 
-import com.example.kton.domain.model.InformacionNutricional
-import com.example.kton.domain.model.Ingrediente
-import com.example.kton.domain.model.IngredientePaso
-import com.example.kton.domain.model.Paso
-import com.example.kton.domain.model.PorcentajeEnergetico
-import com.example.kton.domain.model.Receta
-import com.example.kton.domain.model.Resultado
+import com.example.kton.domain.model.interfaces.InformacionNutricional
+import com.example.kton.domain.model.interfaces.Ingrediente
+import com.example.kton.domain.model.interfaces.IngredientePaso
+import com.example.kton.domain.model.interfaces.Paso
+import com.example.kton.domain.model.interfaces.PorcentajeEnergetico
+import com.example.kton.domain.model.interfaces.Receta
+import com.example.kton.domain.model.interfaces.Resultado
 import com.google.gson.annotations.SerializedName
 
 // data/network/model/RecetaResponse.kt

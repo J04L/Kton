@@ -1,6 +1,6 @@
 package com.example.kton.utils
 
-import com.example.kton.domain.model.Usuario
+import com.example.kton.domain.model.UsuarioDomain
 import com.google.gson.Gson
 
 val nivelesDeActividad : Map<String, Int> = mapOf(
@@ -66,4 +66,4 @@ val usuarioTest = "{\n" +
         "}"
 
 val gson = Gson()
-val usuarioPruebas = gson.fromJson(usuarioTest, Usuario::class.java)
+val usuarioPruebas = gson.fromJson(usuarioTest, UsuarioDomain::class.java)

@@ -1,4 +1,4 @@
-package com.example.kton.domain.model
+package com.example.kton.domain.model.interfaces
 
 interface Receta {
     val id: String?

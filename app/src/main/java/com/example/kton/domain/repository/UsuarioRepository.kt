@@ -1,8 +1,8 @@
 package com.example.kton.domain.repository
 
-import com.example.kton.domain.model.Usuario
+import com.example.kton.domain.model.UsuarioDomain
 
 interface UsuarioRepository {
-    suspend fun getUsuario(id: String): Result<Usuario>
-    suspend fun createUsuario(usuario: Usuario, password: String): Result<Usuario>
+    suspend fun getUsuario(id: String): Result<UsuarioDomain>
+    /*suspend fun createUsuario(usuario: UsuarioDomain, password: String): Result<UsuarioDomain>*/
 }

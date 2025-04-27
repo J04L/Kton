@@ -31,8 +31,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import com.example.kton.presentation.RecetaViewModel
-import com.example.kton.presentation.UsuarioViewModel
+import com.example.kton.domain.viewModels.RecetaViewModel
+import com.example.kton.domain.viewModels.UsuarioViewModel
 import com.example.kton.utils.NivelesActividad
 import com.example.kton.utils.nivelesDeActividad
 import com.example.kton.utils.recetasFavoritas

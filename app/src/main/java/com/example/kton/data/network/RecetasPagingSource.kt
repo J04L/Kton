@@ -3,7 +3,7 @@ package com.example.kton.data.network
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.kton.data.network.api.RecetaService
-import com.example.kton.domain.repository.toDomain
+import com.example.kton.domain.repository.implementatios.toDomain
 import com.example.kton.presentation.models.RecetaUI
 import kotlin.random.Random
 
@@ -56,7 +56,7 @@ class RecetasPagingSource(
 
     private fun getRandomSize() : Int{
         val num = Random.nextInt(100)
-        return if (num > 25) RecetaUI.SMALLSIZE
-        else RecetaUI.LARGESIZE
+        return if (num > 25) RecetaUI.SMALLWEIGHT
+        else RecetaUI.LARGEWEIGHT
     }
 }

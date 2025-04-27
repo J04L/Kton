@@ -1,43 +1,42 @@
 package com.example.kton.presentation.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
 private val DarkColorScheme = darkColorScheme(
-    primary = RED_0,
+    primary = RED_1,
     onPrimary = BLACK_2,
-    secondary = GREEN_0,
+    secondary = GREEN_1,
     onSecondary = BLACK_2,
     surface = BLACK_1,
     onSurface = WHITE_0,
     surfaceVariant = BLACK_2,
     onSurfaceVariant = WHITE_0,
     background = BLACK_0,
-    onBackground = WHITE_0
+    onBackground = WHITE_0,
+    error = RED_0,
+    onError = WHITE_1
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = RED_0,
+    primary = RED_1,
     onPrimary = WHITE_0,
-    secondary = GREEN_0,
+    secondary = GREEN_1,
     onSecondary = WHITE_0,
     surface = WHITE_1,
     onSurface = BLACK_0,
     surfaceVariant = WHITE_2,
     onSurfaceVariant = BLACK_0,
     background = WHITE_0,
-    onBackground = BLACK_0
+    onBackground = BLACK_0,
+    error = GREEN_0,
+    onError = BLACK_1
 )
 
 object Paddings {
